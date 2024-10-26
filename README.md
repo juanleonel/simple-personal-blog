@@ -1,11 +1,13 @@
 # Simple-personal-blog
 projects from roadmap.sh
 
-
 Stack
 - [Alpine.js](https://alpinejs.dev/) - Framework for Front end
 - [Node.js](https://nodejs.org/) - Environment for JS
 - [Express](https://expressjs.com/) - Framework web for Node.js
+
+# Project URL
+https://roadmap.sh/projects/personal-blog
 
 1. Instalation
   ```bash
@@ -13,5 +15,3 @@ Stack
 
   npm install
 
-# Project URL
-https://roadmap.sh/projects/personal-blog
