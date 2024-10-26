@@ -1,4 +1,4 @@
-# simple-personal-blog
+# Simple-personal-blog
 projects from roadmap.sh
 
 
