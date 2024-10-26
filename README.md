@@ -12,3 +12,6 @@ Stack
   git clone https://github.com/juanleonel/simple-personal-blog
 
   npm install
+
+# Project URL
+https://roadmap.sh/projects/personal-blog
