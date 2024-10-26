@@ -1,0 +1,74 @@
+<h1>{{title}}</h1>
+<div x-data="blogAdmin()" x-init="getBlogs">
+  <a href="/admin/new">Add</a>
+  <br>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <template x-for="(blog, index) in blogs" :key="index">
+        <tr>
+          <td x-text="blog.id"></td>
+          <td x-text="blog.title"></td>
+          <td>
+            <a :href="'/admin/new?id=' + blog.id">Edit</a> |
+            <button @click="confirmDelete(blog.id)">Delete</button>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const domain = window.location.href;
+  const blogAdmin = () => {
+    return {
+      blogs: [],
+      getBlogs() {
+        fetch('http://localhost:3000/' + 'posts/')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error ' + response.statusText);
+            }
+            return response.json();
+          })
+          .then(data => {
+            this.blogs.push(...data.items)
+          })
+          .catch(error => {
+            console.error('error:', error);
+          });
+      },
+      confirmDelete(id) {
+        if (confirm("Are you sure you want to delete this blog?")) {
+          this.deletePost(id);
+        }
+      },
+      deletePost(id) {
+        fetch('http://localhost:3000/' + 'posts/'+ id,
+          {
+            method: 'DELETE'
+          }
+        )
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          this.blogs = [...data.items]
+        })
+        .catch(error => {
+          console.error('error:', error);
+        });
+      }
+    };
+  };
+</script>

@@ -1,0 +1,21 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.container {
+  /* margin: 10%; */
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+}
+.container div {
+  display: flex;
+  margin: 5px 0px;
+}

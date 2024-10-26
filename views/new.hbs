@@ -1,0 +1,103 @@
+<div x-data="createPost()" class="container">
+  <h1 x-text="title"></h1>
+  <form @submit.prevent="createOrUpdate">
+      <input type="hidden" x-model="post.id">
+    <div>
+      <label for="">Title</label>
+      <input type="text" name="title" x-model="post.title">
+    </div>
+    <div>
+      <label for="">Publish data</label>
+      <input type="date" x-model="post.date">
+    </div>
+    <div>
+      <label for="">Content</label>
+      <textarea name="content" id="" x-model="post.content"></textarea>
+    </div>
+    <div>
+      <input type="submit" value="Create">
+      <a href="/admin/">Back</a>
+    </div>
+  </form>
+</div>
+
+<script>
+  const domain = window.location.href;
+  const createPost = () => {
+    return {
+      post: {
+        id: null,
+        title: null,
+        content: null,
+        date: null
+      },
+      id: null,
+      title: '',
+      init() {
+        this.getUrlParams();
+        this.getPost();
+        this.title = this.id ? 'Update article' : 'New article';
+      },
+      getUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        this.id = params.get('id');
+      },
+      getPost() {
+        if (!this.id) { return; }
+
+        fetch('http://localhost:3000/' + 'posts/' + this.id)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error ' + response.statusText);
+            }
+            return response.json();
+          })
+          .then(data => {
+            this.setPostInfo(data.item);
+          })
+          .catch(error => {
+            console.error('error:', error);
+          });
+      },
+
+      setPostInfo(data) {
+        this.post.id = data.id;
+        this.post.title = data.title;
+        this.post.date = data.date;
+        this.post.content = data.content;
+      },
+
+      createOrUpdate() {
+        let url = 'http://localhost:3000/' + 'posts/';
+        const method = this.post.id ? 'PUT' : 'POST';
+
+        if (this.post.id) {
+          url += this.post.id;
+        }
+
+        fetch(url,
+          {
+            method: method,
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.post)
+          }
+        )
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data)
+        })
+        .catch(error => {
+          console.error('error:', error);
+        });
+      }
+    }
+  };
+</script>

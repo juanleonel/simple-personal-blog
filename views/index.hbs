@@ -1,0 +1,41 @@
+<h1>{{title}}</h1>
+
+<div x-data="blogIndex()" x-init="getBlogs">
+    <template x-for="(blog, index) in blogs">
+        <div>
+            <a @click="redirect(blog)">
+              <h2 x-text="blog.title"></h2>
+            </a>
+            <span x-text="blog.date"></span>
+        </div>
+    </template>
+</div>
+
+<script>
+  const domain = window.location.href;
+
+  const blogIndex = () => {
+    return {
+      blogs: [],
+      getBlogs() {
+        fetch(domain + 'blogs/')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error ' + response.statusText);
+            }
+            return response.json();
+          })
+          .then(data => {
+            this.blogs.push(...data.items)
+          })
+          .catch(error => {
+            console.error('error:', error);
+          });
+      },
+
+      redirect(item) {
+        window.location.href = domain + 'article/' + item.id
+      }
+    };
+  };
+</script>
